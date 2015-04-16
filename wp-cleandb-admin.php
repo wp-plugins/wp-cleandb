@@ -279,32 +279,6 @@ function Unused_Tags_Total() {
 }
 
 
-// Output the unused MySQL Data for each table in the WordPress database
-function Unused_MySQL_Table_Size() {
-	global $wpdb;
-	
-	$sql = 'SHOW TABLE STATUS FROM ' . DB_NAME;
-	$query = $wpdb->get_results($sql, ARRAY_A);
-	
-	foreach($query as $row) {
-		$unusedspace = $row['Data_free'] / 1024;
-		$unusedspace = round($unusedspace,2);
-		if ($unusedspace > 0) {
-?>
-			<tr>
-				<td</td>
-				<td> - <?php echo $row['Name']; ?></td>
-				<td></td>
-				<td><?php echo $unusedspace; ?> kb</td>
-				<td><?php echo Division(Database_Size(), $unusedspace); ?>%</td>
-			</tr>
-<?php
-		}
-	}
-	
-	return $totalunusedspace;
-}
-
 // Do division
 function Division($total, $division) {
 	$division = ($division / $total) * 100;
@@ -394,7 +368,6 @@ function Division($total, $division) {
 				<td><?php echo Unused_MySQL_Size(); ?> kb</td>
 				<td><?php echo Division(Database_Size(),Unused_MySQL_Size()); ?>%</td>
 			</tr>
-			<?php Unused_MySQL_Table_Size(); ?>
 		</table>
 		
 		<p>Make sure you have a backup of you WordPress database before cleanup!<br />
