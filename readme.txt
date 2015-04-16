@@ -46,5 +46,9 @@ Have any questions? Leave them in the comments!
 
 == Changelog ==
 
+
+= 1.1 =
+* Added display of each WPDB table size having overhead.
+
 = 1.0 =
 * Initial release.
