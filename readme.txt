@@ -3,7 +3,7 @@ Contributors: gerrygooner
 Tags: clean, cleanup, comments, database, optimize
 Requires at least: 3.0
 Tested up to: 4.1.1
-Stable tag: 1.1.1
+Stable tag: 1.0
 License: GPLv2 or later
 
 Clean your WordPress database.
@@ -46,9 +46,8 @@ Have any questions? Leave them in the comments!
 
 == Changelog ==
 
-
-= 1.1.1 =
-* Added display of each WPDB table size having overhead.
+= 1.0.1 =
+* Fixed typo.
 
 = 1.0 =
 * Initial release.
