@@ -239,7 +239,7 @@ function Unused_MySQL_Table_Size() {
 ?>
 		<tr>
 			<td></td>
-			<td><?php echo $row['Name']; ?></td>
+			<td><?php echo json_decode('\u00BB') . ' ' . $row['Name']; ?></td>
 			<td></td>
 			<td><?php echo $row['Unused_Space']; ?> kb</td>
 			<td><?php echo $row['Unused_Percent']; ?>%</td>
