@@ -45,6 +45,7 @@ Have any questions? Leave them in the comments!
 1. WP-CleanDB settings screen.
 
 == Changelog ==
+
 = 1.1 =
 Added unused table size details.
 

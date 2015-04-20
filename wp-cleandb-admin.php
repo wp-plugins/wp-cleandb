@@ -401,6 +401,9 @@ function Division($total, $division) {
 				<td><?php echo Unused_MySQL_Size(); ?> kb</td>
 				<td><?php echo Division(Database_Size(), Unused_MySQL_Size()); ?>%</td>
 			</tr>
+			
+			<?php Unused_MySql_Table_Size(); ?>
+			
 		</table>
 		
 		<p>Make sure you have a backup of you WordPress database before cleanup!<br />
