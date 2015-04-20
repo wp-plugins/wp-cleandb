@@ -370,7 +370,7 @@ function Division($total, $division) {
 			</tr>
 		</table>
 		
-		<p>Make sure you have a backup of your WordPress database before cleanup!<br />
+		<p>Make sure you have a backup of you WordPress database before cleanup!<br />
 			<input type="submit" name="submit" value="Cleanup the selected items!" style="width: 300px;" class="button-primary">
 		</p>
 	</form>
