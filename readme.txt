@@ -2,8 +2,8 @@
 Contributors: gerrygooner
 Tags: clean, cleanup, comments, database, optimize
 Requires at least: 3.0
-Tested up to: 4.1.1
-Stable tag: 1.0
+Tested up to: 4.2
+Stable tag: 1.3
 License: GPLv2 or later
 
 Clean your WordPress database.
@@ -45,6 +45,27 @@ Have any questions? Leave them in the comments!
 1. WP-CleanDB settings screen.
 
 == Changelog ==
+
+= 1.3 =
+Fixed stability in repo.
+
+= 1.2.1 = 
+Fixed Plugin URI.
+
+= 1.2 =
+Tested up to WP 4.2.
+
+= 1.1.2 =
+Tidy up output.
+
+= 1.1.1 =
+Changed Plugin URL.
+
+= 1.1 =
+Added unused table size details.
+
+= 1.0.1 =
+Fixed typo.
 
 = 1.0 =
 * Initial release.
