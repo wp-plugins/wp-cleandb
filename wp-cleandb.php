@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: WP-CleanDB
-Plugin URI: http://gerrytucker.co.uk/wp-plugins/wpclean-db.zip
+Plugin URI: https://wordpress.org/plugins/wp-cleandb.1.2.1.zip
 Description: Cleanup your Wordpress database in one click!
-Version: 1.0
+Version: 1.2.1
 Author: Gerry Tucker
 Author URI: http://gerrytucker.co.uk/
 License: GPLv2 or later
