@@ -46,9 +46,14 @@ Have any questions? Leave them in the comments!
 
 == Changelog ==
 
-
 = 1.1.1 =
-* Added display of each WPDB table size having overhead.
+Changed Plugin URL.
+
+= 1.1 =
+Added unused table size details.
+
+= 1.0.1 =
+Fixed typo.
 
 = 1.0 =
 * Initial release.

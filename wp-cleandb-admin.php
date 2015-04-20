@@ -109,7 +109,7 @@ function Database_Size() {
 	foreach($query as $row) {
 		$usedspace = $row['Data_length'] + $row['Index_length'];
 		$usedspace = $usedspace / 1024;
-		$usedspace = round($usedspace,2);
+		$usedspace = round($usedspace, 2);
 		$totalusedspace += $usedspace;
 	}
 	
@@ -128,7 +128,7 @@ function Post_Revision_Size() {
 
 	foreach($query as $result) {
 		$size = ($result['Avg_row_length'] * $postrevision) / 1024;
-		$size = round($size,2);
+		$size = round($size, 2);
 	}
 	
 	return $size;
@@ -155,7 +155,7 @@ function Spam_Comment_Size() {
 	$query = $wpdb->get_results($sql, ARRAY_A);
 	foreach($query as $result) {
 		$size = ($result['Avg_row_length'] * $spam) / 1024;
-		$size = round($size,2);
+		$size = round($size, 2);
 	}
 	
 	return $size;
@@ -182,7 +182,7 @@ function Unapproved_Comments_Size() {
 	$query = $wpdb->get_results($sql, ARRAY_A);
 	foreach($query as $result) {
 		$size = ($result['Avg_row_length'] * $unapproved) / 1024;
-		$size = round($size,2);
+		$size = round($size, 2);
 	}
 	
 	return $size;
@@ -208,11 +208,44 @@ function Unused_MySQL_Size() {
 	
 	foreach($query as $row) {
 		$unusedspace = $row['Data_free'] / 1024;
-		$unusedspace = round($unusedspace,2);
+		$unusedspace = round($unusedspace, 2);
 		$totalunusedspace   += $unusedspace;
 	}
 	
 	return $totalunusedspace;
+}
+
+// Get the total size of unused MySQL Data from the WordPress database
+function Unused_MySQL_Table_Size() {
+	global $wpdb;
+	
+	$sql = 'SHOW TABLE STATUS FROM ' . DB_NAME;
+	$query = $wpdb->get_results($sql, ARRAY_A);
+	$mysql_table_size = array();
+	
+	foreach($query as $row) {
+		$unusedspace = $row['Data_free'] / 1024;
+		$unusedspace = round($unusedspace, 2);
+		if ($unusedspace > 0) {
+			$mysql_table_size[] = array(
+				'Name' => $row['Name'],
+				'Unused_Space' => $unusedspace,
+				'Unused_Percent' => Division(Database_Size(), $unusedspace)
+			);
+		}
+	}
+	
+	foreach($mysql_table_size as $row) {
+?>
+		<tr>
+			<td></td>
+			<td><?php echo $row['Name']; ?></td>
+			<td></td>
+			<td><?php echo $row['Unused_Space']; ?> kb</td>
+			<td><?php echo $row['Unused_Percent']; ?>%</td>
+		</tr>
+<?php
+	}
 }
 
 // Get the total size of useful WordPress data from the WordPress database
@@ -233,7 +266,7 @@ function Unused_Post_Meta_Size() {
 	$query = $wpdb->get_results($sql, ARRAY_A);
 	foreach($query as $result) {
 		$size = ($result['Avg_row_length'] * $postmeta) / 1024;
-		$size = round($size,2);
+		$size = round($size, 2);
 	}
 	return $size;
 }
@@ -245,7 +278,7 @@ function Unused_Post_Meta_Total() {
 	$query = 'SELECT COUNT(pm.meta_id) FROM ' . $wpdb->postmeta . ' pm LEFT JOIN ' . $wpdb->posts . ' wp ON wp.ID = pm.post_id WHERE wp.ID IS NULL';
 	$postmeta = $wpdb->get_var($query);
 
-	$size = round($postmeta,2);
+	$size = round($postmeta, 2);
 	
 	return $size;
 }
@@ -261,7 +294,7 @@ function Unused_Tags_Size() {
 	$query = $wpdb->get_results($sql, ARRAY_A);
 	foreach($query as $result) {
 		$size = ($result['Avg_row_length'] * $tags) / 1024;
-		$size = round($size,2);
+		$size = round($size, 2);
 	}
 	return $size;
 }
@@ -273,37 +306,11 @@ function Unused_Tags_Total() {
 	$query = 'SELECT COUNT(wt.term_id) FROM ' . $wpdb->terms . ' wt INNER JOIN ' . $wpdb->term_taxonomy . ' wtt ON wt.term_id=wtt.term_id WHERE wtt.taxonomy=\'post_tag\' AND wtt.count=0';
 	$tags = $wpdb->get_var($query);
 
-	$size = round($tags,2);
+	$size = round($tags, 2);
 	
 	return $size;
 }
 
-
-// Output the unused MySQL Data for each table in the WordPress database
-function Unused_MySQL_Table_Size() {
-	global $wpdb;
-	
-	$sql = 'SHOW TABLE STATUS FROM ' . DB_NAME;
-	$query = $wpdb->get_results($sql, ARRAY_A);
-	
-	foreach($query as $row) {
-		$unusedspace = $row['Data_free'] / 1024;
-		$unusedspace = round($unusedspace,2);
-		if ($unusedspace > 0) {
-?>
-			<tr>
-				<td</td>
-				<td> - <?php echo $row['Name']; ?></td>
-				<td></td>
-				<td><?php echo $unusedspace; ?> kb</td>
-				<td><?php echo Division(Database_Size(), $unusedspace); ?>%</td>
-			</tr>
-<?php
-		}
-	}
-	
-	return $totalunusedspace;
-}
 
 // Do division
 function Division($total, $division) {
@@ -350,51 +357,53 @@ function Division($total, $division) {
 				<td>Useful WordPress Data</td>
 				<td></td>
 				<td><?php echo Useful_WordPress_Data_Size(); ?> kb</td>
-				<td><?php echo Division(Database_Size(),Useful_WordPress_Data_Size()); ?>%</td>
+				<td><?php echo Division(Database_Size(), Useful_WordPress_Data_Size()); ?>%</td>
 			</tr>
 			<tr>
 				<td align="center"><input type="checkbox" name="cleanup-rev" id="cleanup-rev"></td>
 				<td>Post Revisions</td>
 				<td><?php echo Post_Revisions_Total(); ?></td>
 				<td><?php echo Post_Revision_Size(); ?> kb</td>
-				<td><?php echo Division(Database_Size(),Post_Revision_Size()); ?>%</td>
+				<td><?php echo Division(Database_Size(), Post_Revision_Size()); ?>%</td>
 			</tr>
 			<tr>
 				<td align="center"><input type="checkbox" name="cleanup-spam" id="cleanup-spam"></td>
 				<td>Spam Comments</td>
 				<td><?php echo Spam_Comments_Total(); ?></td>
 				<td><?php echo Spam_Comment_Size(); ?> kb</td>
-				<td><?php echo Division(Database_Size(),Spam_Comment_Size()); ?>%</td>
+				<td><?php echo Division(Database_Size(), Spam_Comment_Size()); ?>%</td>
 			</tr>
 			<tr>
 				<td align="center"><input type="checkbox" name="cleanup-unapproved" id="cleanup-unapproved"></td>
 				<td>Unapproved Comments</td>
 				<td><?php echo Unapproved_Comment_Total(); ?></td>
 				<td><?php echo Unapproved_Comments_Size(); ?> kb</td>
-				<td><?php echo Division(Database_Size(),Unapproved_Comments_Size()); ?>%</td>
+				<td><?php echo Division(Database_Size(), Unapproved_Comments_Size()); ?>%</td>
 			</tr>
 			<tr>
 				<td align="center"><input type="checkbox" name="cleanup-tags" id="cleanup-tags"></td>
 				<td>Unused Tags</td>
 				<td><?php echo Unused_Tags_Total(); ?></td>
 				<td><?php echo Unused_Tags_Size(); ?> kb</td>
-				<td><?php echo Division(Database_Size(),Unused_Tags_Size()); ?>%</td>
+				<td><?php echo Division(Database_Size(), Unused_Tags_Size()); ?>%</td>
 			</tr>
 			<tr>
 				<td align="center"><input type="checkbox" name="cleanup-postmeta" id="cleanup-postmeta" ></td>
 				<td>Unused Post Meta</td>
 				<td><?php echo Unused_Post_Meta_Total(); ?></td>
 				<td><?php echo Unused_Post_Meta_Size(); ?> kb</td>
-				<td><?php echo Division(Database_Size(),Unused_Post_Meta_Size()); ?>%</td>
+				<td><?php echo Division(Database_Size(), Unused_Post_Meta_Size()); ?>%</td>
 			</tr>
 			<tr>
 				<td align="center"><input type="checkbox" name="cleanup-mysql" id="cleanup-mysql"></td>
 				<td>Unused MySQL Data</td>
 				<td></td>
 				<td><?php echo Unused_MySQL_Size(); ?> kb</td>
-				<td><?php echo Division(Database_Size(),Unused_MySQL_Size()); ?>%</td>
+				<td><?php echo Division(Database_Size(), Unused_MySQL_Size()); ?>%</td>
 			</tr>
-			<?php Unused_MySQL_Table_Size(); ?>
+			
+			<?php Unused_MySql_Table_Size(); ?>
+			
 		</table>
 		
 		<p>Make sure you have a backup of you WordPress database before cleanup!<br />
