@@ -3,7 +3,7 @@ Contributors: gerrygooner
 Tags: clean, cleanup, comments, database, optimize
 Requires at least: 3.0
 Tested up to: 4.2
-Stable tag: 1.3
+Stable tag: 1.3.0.1
 License: GPLv2 or later
 
 Clean your WordPress database.
