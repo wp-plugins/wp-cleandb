@@ -326,7 +326,7 @@ function Division($total, $division) {
 	<h2><?php _e('WP-CleanDB'); ?></h2>
 
 	<?php if($cleaneddb <> '') { ?>
-	<div id="message" class="updated fade"><?php echo $cleaneddb; ?></div>
+	<div id="message" class="updated fade"><p><?php echo $cleaneddb; ?></p></div>
 	<?php } ?>
 
 	<h3>At a glance</h3>
